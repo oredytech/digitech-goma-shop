@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Twitter, Mail, Phone } from 'lucide-react';
@@ -119,6 +118,9 @@ const Footer = () => {
             <Link to="/terms" className="text-gray-400 hover:text-white text-sm transition-colors">
               Conditions générales
             </Link>
+          </div>
+          <div className="text-gray-400 text-sm mt-2 md:mt-0">
+            Conçu par <a href="https://oredytech.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Oredy Technologies</a>
           </div>
         </div>
       </div>
