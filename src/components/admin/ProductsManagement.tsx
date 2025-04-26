@@ -41,7 +41,7 @@ const ProductsManagement = () => {
   };
 
   // Gérer la visibilité du produit
-  const handleToggleVisibility = (productId: number) => {
+  const handleToggleVisibility = (productId: string) => {
     toast({
       title: "Visibilité modifiée",
       description: "La visibilité du produit a été mise à jour.",
@@ -49,7 +49,7 @@ const ProductsManagement = () => {
   };
 
   // Gérer la modification du produit
-  const handleEdit = (productId: number) => {
+  const handleEdit = (productId: string) => {
     toast({
       title: "Modification du produit",
       description: "Cette fonctionnalité sera bientôt disponible.",
@@ -57,7 +57,7 @@ const ProductsManagement = () => {
   };
 
   // Gérer la suppression du produit
-  const handleDelete = (productId: number) => {
+  const handleDelete = (productId: string) => {
     toast({
       title: "Suppression du produit",
       description: "Cette fonctionnalité sera bientôt disponible.",
