@@ -100,7 +100,7 @@ const Admin = () => {
         </div>
       </SidebarHeader>
       <SidebarSeparator />
-      <SidebarContent>
+      <SidebarContent className="overflow-y-auto flex-grow">
         <SidebarMenu>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.id}>
@@ -108,9 +108,10 @@ const Admin = () => {
                 isActive={activeSection === item.id} 
                 onClick={() => setActiveSection(item.id)}
                 tooltip={item.label}
+                className="transition-colors duration-200"
               >
-                <item.icon />
-                <span>{item.label}</span>
+                <item.icon className="w-5 h-5" />
+                <span className="ml-2 md:opacity-100">{item.label}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
@@ -121,7 +122,7 @@ const Admin = () => {
           <Button 
             variant="outline" 
             size="sm" 
-            className="w-full justify-start"
+            className="w-full justify-start transition-colors duration-200"
             onClick={toggleDarkMode}
           >
             {darkMode ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
@@ -130,7 +131,7 @@ const Admin = () => {
           <Button 
             variant="default" 
             size="sm" 
-            className="w-full justify-start bg-digitech-orange hover:bg-digitech-orange/90"
+            className="w-full justify-start bg-digitech-orange hover:bg-digitech-orange/90 transition-colors duration-200"
           >
             <Bell className="mr-2 h-4 w-4" />
             Notifications
@@ -145,7 +146,11 @@ const Admin = () => {
       <SidebarProvider>
         <div className="flex min-h-screen w-full">
           {/* Desktop Sidebar */}
-          <Sidebar variant="sidebar" collapsible="icon">
+          <Sidebar 
+            variant="sidebar" 
+            collapsible="icon" 
+            className="hidden md:flex border-r border-gray-200 dark:border-gray-800"
+          >
             <AdminSidebarContent />
           </Sidebar>
 
@@ -155,19 +160,22 @@ const Admin = () => {
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="fixed top-4 left-4 z-50 md:hidden"
+                className="fixed top-4 left-4 z-50 md:hidden hover:bg-gray-100 dark:hover:bg-gray-800"
               >
-                <Menu />
-                <span className="sr-only">Toggle Menu</span>
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[300px] p-0">
+            <SheetContent 
+              side="left" 
+              className="w-[280px] p-0 border-r border-gray-200 dark:border-gray-800"
+            >
               <AdminSidebarContent />
             </SheetContent>
           </Sheet>
 
-          <main className="flex-1 overflow-y-auto p-6">
-            <div className="container mx-auto">
+          <main className="flex-1 overflow-y-auto p-4 md:p-6">
+            <div className="container mx-auto max-w-7xl">
               {renderContent()}
             </div>
           </main>
