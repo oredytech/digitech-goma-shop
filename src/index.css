@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -96,6 +99,30 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-poppins;
+  }
+
+  .btn-primary {
+    @apply bg-digitech-orange hover:bg-opacity-90 transition-all text-white font-medium px-6 py-2 rounded-md;
+  }
+
+  .btn-secondary {
+    @apply bg-digitech-blue hover:bg-opacity-90 transition-all text-white font-medium px-6 py-2 rounded-md;
+  }
+
+  .btn-outline {
+    @apply border border-digitech-blue hover:bg-digitech-blue hover:text-white transition-all text-digitech-blue font-medium px-6 py-2 rounded-md;
+  }
+  
+  .section-container {
+    @apply container mx-auto px-4 py-12 md:py-16;
+  }
+  
+  .section-title {
+    @apply text-2xl md:text-3xl font-semibold text-digitech-blue mb-6;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
   }
 }
