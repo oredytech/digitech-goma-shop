@@ -1,34 +1,6 @@
 
 import React, { useState } from 'react';
-import { 
-  BarChart3, 
-  ShoppingBag, 
-  Package, 
-  Users, 
-  CreditCard, 
-  Percent, 
-  Settings, 
-  MessageSquare,
-  ExternalLink,
-  Sun,
-  Moon,
-  Bell,
-  Menu,
-} from 'lucide-react';
-import { 
-  SidebarProvider, 
-  Sidebar, 
-  SidebarContent, 
-  SidebarHeader, 
-  SidebarFooter,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarSeparator
-} from '@/components/ui/sidebar';
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Badge } from '@/components/ui/badge';
+import { AdminLayout } from '../components/admin/layout/AdminLayout';
 
 // Dashboard components
 import DashboardOverview from '../components/admin/DashboardOverview';
@@ -45,14 +17,10 @@ const Admin = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [darkMode, setDarkMode] = useState(false);
 
-  // Toggle dark mode function
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
-    // In a real implementation, you would apply dark mode to the entire app
-    // by toggling a class on the document or using a context
   };
 
-  // Function to render the active section content
   const renderContent = () => {
     switch(activeSection) {
       case 'dashboard':
@@ -78,110 +46,15 @@ const Admin = () => {
     }
   };
 
-  const menuItems = [
-    { id: 'dashboard', label: 'Tableau de Bord', icon: BarChart3 },
-    { id: 'products', label: 'Produits', icon: Package },
-    { id: 'orders', label: 'Commandes', icon: ShoppingBag },
-    { id: 'customers', label: 'Clients', icon: Users },
-    { id: 'payments', label: 'Paiements', icon: CreditCard },
-    { id: 'promotions', label: 'Promotions', icon: Percent },
-    { id: 'messages', label: 'Messages', icon: MessageSquare },
-    { id: 'amazon', label: 'Affiliations Amazon', icon: ExternalLink },
-    { id: 'settings', label: 'Paramètres', icon: Settings },
-  ];
-
-  // Renamed to AdminSidebarContent to avoid conflicts with imported SidebarContent
-  const AdminSidebarContent = () => (
-    <>
-      <SidebarHeader className="flex items-center justify-center py-6">
-        <div className="flex items-center space-x-2">
-          <span className="text-xl font-bold text-digitech-blue">DIGITECH</span>
-          <span className="text-sm font-medium text-digitech-orange">ADMIN</span>
-        </div>
-      </SidebarHeader>
-      <SidebarSeparator />
-      <SidebarContent className="overflow-y-auto flex-grow">
-        <SidebarMenu>
-          {menuItems.map((item) => (
-            <SidebarMenuItem key={item.id}>
-              <SidebarMenuButton 
-                isActive={activeSection === item.id} 
-                onClick={() => setActiveSection(item.id)}
-                tooltip={item.label}
-                className="transition-colors duration-200"
-              >
-                <item.icon className="w-5 h-5" />
-                <span className="ml-2 md:opacity-100">{item.label}</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarContent>
-      <SidebarFooter>
-        <div className="flex flex-col p-4 space-y-4">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="w-full justify-start transition-colors duration-200"
-            onClick={toggleDarkMode}
-          >
-            {darkMode ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
-            {darkMode ? "Mode Clair" : "Mode Sombre"}
-          </Button>
-          <Button 
-            variant="default" 
-            size="sm" 
-            className="w-full justify-start bg-digitech-orange hover:bg-digitech-orange/90 transition-colors duration-200"
-          >
-            <Bell className="mr-2 h-4 w-4" />
-            Notifications
-          </Button>
-        </div>
-      </SidebarFooter>
-    </>
-  );
-
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50'}`}>
-      <SidebarProvider>
-        <div className="flex min-h-screen w-full">
-          {/* Desktop Sidebar */}
-          <Sidebar 
-            variant="sidebar" 
-            collapsible="icon" 
-            className="hidden md:flex border-r border-gray-200 dark:border-gray-800"
-          >
-            <AdminSidebarContent />
-          </Sidebar>
-
-          {/* Mobile Menu */}
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="fixed top-4 left-4 z-50 md:hidden hover:bg-gray-100 dark:hover:bg-gray-800"
-              >
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent 
-              side="left" 
-              className="w-[280px] p-0 border-r border-gray-200 dark:border-gray-800"
-            >
-              <AdminSidebarContent />
-            </SheetContent>
-          </Sheet>
-
-          <main className="flex-1 overflow-y-auto p-4 md:p-6">
-            <div className="container mx-auto max-w-7xl">
-              {renderContent()}
-            </div>
-          </main>
-        </div>
-      </SidebarProvider>
-    </div>
+    <AdminLayout
+      darkMode={darkMode}
+      activeSection={activeSection}
+      onSectionChange={setActiveSection}
+      onToggleDarkMode={toggleDarkMode}
+    >
+      {renderContent()}
+    </AdminLayout>
   );
 };
 
