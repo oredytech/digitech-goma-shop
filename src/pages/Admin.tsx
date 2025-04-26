@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   BarChart3, 
@@ -89,7 +90,8 @@ const Admin = () => {
     { id: 'settings', label: 'Paramètres', icon: Settings },
   ];
 
-  const SidebarContent = () => (
+  // Renamed to AdminSidebarContent to avoid conflicts with imported SidebarContent
+  const AdminSidebarContent = () => (
     <>
       <SidebarHeader className="flex items-center justify-center py-6">
         <div className="flex items-center space-x-2">
@@ -144,7 +146,7 @@ const Admin = () => {
         <div className="flex min-h-screen w-full">
           {/* Desktop Sidebar */}
           <Sidebar variant="sidebar" collapsible="icon">
-            <SidebarContent />
+            <AdminSidebarContent />
           </Sidebar>
 
           {/* Mobile Menu */}
@@ -160,7 +162,7 @@ const Admin = () => {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-[300px] p-0">
-              <SidebarContent />
+              <AdminSidebarContent />
             </SheetContent>
           </Sheet>
 
