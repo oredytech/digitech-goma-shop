@@ -2,14 +2,24 @@
 import React from 'react';
 import { CreditCard } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from "@/components/ui/use-toast";
 
 const PaymentsManagement = () => {
+  const { toast } = useToast();
+
+  const handlePaymentAction = () => {
+    toast({
+      title: "Gestion des Paiements",
+      description: "Cette section sera implémentée prochainement.",
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Gestion des Paiements</h1>
       </div>
-      <Card>
+      <Card onClick={handlePaymentAction} className="cursor-pointer hover:shadow-md transition-shadow">
         <CardHeader>
           <CardTitle>Gestion des Paiements</CardTitle>
           <CardDescription>Cette section sera implémentée prochainement.</CardDescription>

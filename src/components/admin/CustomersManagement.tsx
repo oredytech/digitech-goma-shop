@@ -2,14 +2,24 @@
 import React from 'react';
 import { Users } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from "@/components/ui/use-toast";
 
 const CustomersManagement = () => {
+  const { toast } = useToast();
+
+  const handleCustomerAction = () => {
+    toast({
+      title: "Gestion des Clients",
+      description: "Cette section sera implémentée prochainement.",
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Gestion des Clients</h1>
       </div>
-      <Card>
+      <Card onClick={handleCustomerAction} className="cursor-pointer hover:shadow-md transition-shadow">
         <CardHeader>
           <CardTitle>Gestion des Clients</CardTitle>
           <CardDescription>Cette section sera implémentée prochainement.</CardDescription>

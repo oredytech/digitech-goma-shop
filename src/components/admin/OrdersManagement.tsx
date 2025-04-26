@@ -1,11 +1,11 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { ShoppingBag, Filter, Download, Edit, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { useToast } from "@/components/ui/use-toast";
 
 // Demo orders data
 const orders = [
@@ -83,11 +83,51 @@ const getStatusBadge = (status: string) => {
 };
 
 const OrdersManagement = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const { toast } = useToast();
+
+  const handleExportCSV = () => {
+    toast({
+      title: "Export CSV",
+      description: "L'exportation des commandes sera bientôt disponible.",
+    });
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleFilter = () => {
+    toast({
+      title: "Filtrage des commandes",
+      description: "Le filtrage des commandes sera bientôt disponible.",
+    });
+  };
+
+  const handleViewDetails = (orderId: string) => {
+    toast({
+      title: "Détails de la commande",
+      description: `Consultation de la commande ${orderId}.`,
+    });
+  };
+
+  const handleEditStatus = (orderId: string) => {
+    toast({
+      title: "Modification du statut",
+      description: `Modification du statut de la commande ${orderId}.`,
+    });
+  };
+
+  const filteredOrders = orders.filter(order => 
+    order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    order.customer.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Gestion des Commandes</h1>
-        <Button variant="outline">
+        <Button variant="outline" onClick={handleExportCSV}>
           <Download className="h-4 w-4 mr-2" />
           Exporter CSV
         </Button>
@@ -130,12 +170,17 @@ const OrdersManagement = () => {
       {/* Search and Filter */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-grow">
-          <Input placeholder="Rechercher une commande..." className="pl-10" />
+          <Input 
+            placeholder="Rechercher une commande..." 
+            className="pl-10" 
+            value={searchTerm}
+            onChange={handleSearch}
+          />
           <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
             <ShoppingBag className="h-4 w-4" />
           </div>
         </div>
-        <Button variant="outline">
+        <Button variant="outline" onClick={handleFilter}>
           <Filter className="h-4 w-4 mr-2" />
           Filtrer
         </Button>
@@ -156,7 +201,7 @@ const OrdersManagement = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders.map((order) => (
+            {filteredOrders.map((order) => (
               <TableRow key={order.id}>
                 <TableCell className="font-medium">{order.id}</TableCell>
                 <TableCell>{order.customer}</TableCell>
@@ -166,10 +211,18 @@ const OrdersManagement = () => {
                 <TableCell className="text-right">${order.total}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
-                    <Button size="icon" variant="ghost">
+                    <Button 
+                      size="icon" 
+                      variant="ghost"
+                      onClick={() => handleViewDetails(order.id)}
+                    >
                       <Eye className="h-4 w-4" />
                     </Button>
-                    <Button size="icon" variant="ghost">
+                    <Button 
+                      size="icon" 
+                      variant="ghost"
+                      onClick={() => handleEditStatus(order.id)}
+                    >
                       <Edit className="h-4 w-4" />
                     </Button>
                   </div>
