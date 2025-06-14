@@ -9,17 +9,40 @@ import {
   Eye, 
   EyeOff,
 } from 'lucide-react';
-import { products } from '@/data/products';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { useToast } from "@/components/ui/use-toast";
+import { useProducts } from '@/hooks/useProducts';
+import { ProductModal } from './modals/ProductModal';
+import { DeleteConfirmModal } from './modals/DeleteConfirmModal';
+import { Product } from '@/data/products';
 
 const ProductsManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("all");
-  const { toast } = useToast();
+  const [productModal, setProductModal] = useState<{
+    isOpen: boolean;
+    mode: 'add' | 'edit';
+    product?: Product;
+  }>({
+    isOpen: false,
+    mode: 'add',
+  });
+  const [deleteModal, setDeleteModal] = useState<{
+    isOpen: boolean;
+    product?: Product;
+  }>({
+    isOpen: false,
+  });
+
+  const { 
+    products, 
+    addProduct, 
+    updateProduct, 
+    deleteProduct, 
+    toggleProductVisibility 
+  } = useProducts();
 
   // Filtrer les produits
   const filteredProducts = products.filter(product => {
@@ -40,36 +63,47 @@ const ProductsManagement = () => {
     setFilter(filterType);
   };
 
-  // Gérer la visibilité du produit
-  const handleToggleVisibility = (productId: string) => {
-    toast({
-      title: "Visibilité modifiée",
-      description: "La visibilité du produit a été mise à jour.",
+  // Gérer l'ajout d'un nouveau produit
+  const handleAddProduct = () => {
+    setProductModal({
+      isOpen: true,
+      mode: 'add',
     });
   };
 
   // Gérer la modification du produit
-  const handleEdit = (productId: string) => {
-    toast({
-      title: "Modification du produit",
-      description: "Cette fonctionnalité sera bientôt disponible.",
+  const handleEdit = (product: Product) => {
+    setProductModal({
+      isOpen: true,
+      mode: 'edit',
+      product,
     });
   };
 
   // Gérer la suppression du produit
-  const handleDelete = (productId: string) => {
-    toast({
-      title: "Suppression du produit",
-      description: "Cette fonctionnalité sera bientôt disponible.",
+  const handleDelete = (product: Product) => {
+    setDeleteModal({
+      isOpen: true,
+      product,
     });
   };
 
-  // Gérer l'ajout d'un nouveau produit
-  const handleAddProduct = () => {
-    toast({
-      title: "Ajout d'un produit",
-      description: "Cette fonctionnalité sera bientôt disponible.",
-    });
+  // Confirmer la suppression
+  const confirmDelete = () => {
+    if (deleteModal.product) {
+      deleteProduct(deleteModal.product.id);
+    }
+    setDeleteModal({ isOpen: false });
+  };
+
+  // Sauvegarder un produit (ajout ou modification)
+  const handleSaveProduct = (productData: Omit<Product, 'id'>) => {
+    if (productModal.mode === 'add') {
+      addProduct(productData);
+    } else if (productModal.product) {
+      updateProduct(productModal.product.id, productData);
+    }
+    setProductModal({ isOpen: false, mode: 'add' });
   };
 
   return (
@@ -175,7 +209,7 @@ const ProductsManagement = () => {
                     <Button 
                       size="icon" 
                       variant="ghost"
-                      onClick={() => handleToggleVisibility(product.id)}
+                      onClick={() => toggleProductVisibility(product.id)}
                     >
                       {product.inStock ? (
                         <EyeOff className="h-4 w-4" />
@@ -186,7 +220,7 @@ const ProductsManagement = () => {
                     <Button 
                       size="icon" 
                       variant="ghost"
-                      onClick={() => handleEdit(product.id)}
+                      onClick={() => handleEdit(product)}
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
@@ -194,7 +228,7 @@ const ProductsManagement = () => {
                       size="icon" 
                       variant="ghost" 
                       className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                      onClick={() => handleDelete(product.id)}
+                      onClick={() => handleDelete(product)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -205,6 +239,22 @@ const ProductsManagement = () => {
           </TableBody>
         </Table>
       </div>
+
+      {/* Modales */}
+      <ProductModal
+        isOpen={productModal.isOpen}
+        onClose={() => setProductModal({ isOpen: false, mode: 'add' })}
+        onSave={handleSaveProduct}
+        product={productModal.product}
+        mode={productModal.mode}
+      />
+
+      <DeleteConfirmModal
+        isOpen={deleteModal.isOpen}
+        onClose={() => setDeleteModal({ isOpen: false })}
+        onConfirm={confirmDelete}
+        productName={deleteModal.product?.name || ''}
+      />
     </div>
   );
 };
