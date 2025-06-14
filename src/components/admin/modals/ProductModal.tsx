@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -90,11 +89,22 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   });
 
   const onSubmit = (data: ProductFormData) => {
-    onSave({
-      ...data,
+    // Créer l'objet avec toutes les propriétés requises
+    const productData: Omit<Product, 'id'> = {
+      name: data.name,
+      description: data.description,
+      price: data.price,
+      category: data.category,
+      inStock: data.inStock,
+      isAmazonAffiliate: data.isAmazonAffiliate,
+      image: data.image,
+      isFeatured: data.isFeatured || false,
+      isNew: data.isNew || false,
       discountPrice: data.discountPrice || undefined,
       amazonUrl: data.isAmazonAffiliate ? data.amazonUrl : undefined,
-    });
+    };
+    
+    onSave(productData);
     form.reset();
     onClose();
   };
