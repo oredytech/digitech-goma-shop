@@ -1,100 +1,143 @@
 
 import React from 'react';
-import { ArrowRight, ShieldCheck, Truck, RefreshCw } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Truck, RefreshCw, Paintbrush, Zap, Monitor } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 const Hero = () => {
+  const services = [
+    {
+      icon: <Monitor className="h-12 w-12 text-digitech-orange" />,
+      title: "Informatique & Électronique",
+      description: "Vente et réparation d'ordinateurs, smartphones et accessoires tech",
+      image: "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&auto=format&fit=crop"
+    },
+    {
+      icon: <Paintbrush className="h-12 w-12 text-digitech-orange" />,
+      title: "Services de Peinture",
+      description: "Peinture intérieure et extérieure, décoration murale professionnelle",
+      image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=400&auto=format&fit=crop"
+    },
+    {
+      icon: <Zap className="h-12 w-12 text-digitech-orange" />,
+      title: "Services Électriques",
+      description: "Installation électrique, maintenance et dépannage électrique",
+      image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&auto=format&fit=crop"
+    }
+  ];
+
   return (
-    <section className="bg-digitech-blue text-white py-12 md:py-20">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <section className="bg-digitech-blue text-white py-8 md:py-12 lg:py-20 overflow-hidden">
+      <div className="container mx-auto px-4 max-w-7xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Hero Content */}
-          <div className="space-y-6 md:pr-8 animate-fade-in">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              Trouvez la <span className="text-digitech-orange">technologie</span> qui vous 
-              correspond à Goma
+          <div className="space-y-4 md:space-y-6 animate-fade-in order-2 lg:order-1">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
+              Trouvez la <span className="text-digitech-orange">technologie</span> et les 
+              <span className="text-digitech-orange"> services</span> qui vous correspondent à Goma
             </h1>
-            <p className="text-gray-300 text-lg md:text-xl">
-              DIGITECH vous propose une large gamme d'ordinateurs, de smartphones et d'accessoires tech de qualité, disponibles localement ou via nos partenaires.
+            <p className="text-gray-300 text-base md:text-lg lg:text-xl max-w-2xl">
+              DIGITECH vous propose une large gamme d'ordinateurs, de smartphones, d'accessoires tech de qualité, 
+              ainsi que des services de peinture et d'électricité professionnels.
             </p>
-            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 pt-2">
-              <Link to="/shop">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
+              <Link to="/shop" className="w-full sm:w-auto">
                 <Button 
-                  className="bg-digitech-orange hover:bg-digitech-orange/90 text-white font-semibold px-6 py-6 h-auto"
+                  className="w-full sm:w-auto bg-digitech-orange hover:bg-digitech-orange/90 text-white font-semibold px-4 md:px-6 py-4 md:py-6 h-auto text-sm md:text-base"
                   size="lg"
                 >
                   Explorer notre boutique
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
                 </Button>
               </Link>
-              <Link to="/promotions">
+              <Link to="/contact" className="w-full sm:w-auto">
                 <Button 
-                  className="bg-transparent hover:bg-white/10 border border-white text-white font-semibold px-6 py-6 h-auto"
+                  className="w-full sm:w-auto bg-transparent hover:bg-white/10 border border-white text-white font-semibold px-4 md:px-6 py-4 md:py-6 h-auto text-sm md:text-base"
                   variant="outline"
                   size="lg"
                 >
-                  Voir nos promotions
+                  Nos services
                 </Button>
               </Link>
             </div>
           </div>
 
-          {/* Hero Image */}
-          <div className="hidden md:block relative h-full animate-fade-in">
-            <div className="relative overflow-hidden rounded-lg aspect-[4/3] bg-gradient-to-br from-digitech-blue/30 to-digitech-orange/30 backdrop-blur">
-              <img
-                src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=500&auto=format&fit=crop"
-                alt="Tech Products"
-                className="object-cover w-full h-full mix-blend-overlay"
-              />
-              <div className="absolute inset-0 bg-gradient-to-tr from-digitech-blue/80 to-transparent"></div>
-              
-              {/* Overlay content */}
-              <div className="absolute bottom-4 left-4 right-4 bg-white/10 backdrop-blur-sm p-4 rounded-lg">
-                <h3 className="text-xl font-semibold mb-2">Informatique & Électronique</h3>
-                <p className="text-sm text-gray-100">
-                  Les meilleurs produits tech à Goma avec livraison locale rapide
-                </p>
-              </div>
+          {/* Services Carousel */}
+          <div className="order-1 lg:order-2 animate-fade-in">
+            <Carousel className="w-full max-w-sm md:max-w-md lg:max-w-lg mx-auto">
+              <CarouselContent>
+                {services.map((service, index) => (
+                  <CarouselItem key={index}>
+                    <div className="relative overflow-hidden rounded-lg aspect-[4/3] bg-gradient-to-br from-digitech-blue/30 to-digitech-orange/30 backdrop-blur">
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        className="object-cover w-full h-full mix-blend-overlay"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-tr from-digitech-blue/80 to-transparent"></div>
+                      
+                      {/* Service content */}
+                      <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-4 md:p-6">
+                        <div className="bg-white/10 backdrop-blur-sm p-3 md:p-4 rounded-full mb-3 md:mb-4">
+                          {service.icon}
+                        </div>
+                        <h3 className="text-lg md:text-xl font-semibold mb-2">{service.title}</h3>
+                        <p className="text-xs md:text-sm text-gray-100 leading-relaxed">
+                          {service.description}
+                        </p>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden md:flex -left-4 lg:-left-8" />
+              <CarouselNext className="hidden md:flex -right-4 lg:-right-8" />
+            </Carousel>
+            
+            {/* Mobile indicators */}
+            <div className="flex justify-center mt-4 md:hidden space-x-2">
+              {services.map((_, index) => (
+                <div key={index} className="w-2 h-2 bg-white/30 rounded-full"></div>
+              ))}
             </div>
           </div>
         </div>
         
         {/* Features */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-16 py-4">
-          <div className="flex items-start space-x-4">
-            <div className="bg-white/10 p-3 rounded-full">
-              <Truck className="h-6 w-6 text-digitech-orange" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-12 md:mt-16 py-4">
+          <div className="flex items-start space-x-3 md:space-x-4">
+            <div className="bg-white/10 p-2 md:p-3 rounded-full flex-shrink-0">
+              <Truck className="h-5 w-5 md:h-6 md:w-6 text-digitech-orange" />
             </div>
-            <div>
-              <h3 className="font-semibold mb-2">Livraison à Goma</h3>
-              <p className="text-gray-300 text-sm">
+            <div className="min-w-0">
+              <h3 className="font-semibold mb-1 md:mb-2 text-sm md:text-base">Livraison à Goma</h3>
+              <p className="text-gray-300 text-xs md:text-sm leading-relaxed">
                 Livraison rapide et fiable pour tous vos achats dans toute la ville de Goma
               </p>
             </div>
           </div>
           
-          <div className="flex items-start space-x-4">
-            <div className="bg-white/10 p-3 rounded-full">
-              <ShieldCheck className="h-6 w-6 text-digitech-orange" />
+          <div className="flex items-start space-x-3 md:space-x-4">
+            <div className="bg-white/10 p-2 md:p-3 rounded-full flex-shrink-0">
+              <ShieldCheck className="h-5 w-5 md:h-6 md:w-6 text-digitech-orange" />
             </div>
-            <div>
-              <h3 className="font-semibold mb-2">Produits Garantis</h3>
-              <p className="text-gray-300 text-sm">
-                Tous nos produits sont authentiques et bénéficient d'une garantie fabricant
+            <div className="min-w-0">
+              <h3 className="font-semibold mb-1 md:mb-2 text-sm md:text-base">Services Garantis</h3>
+              <p className="text-gray-300 text-xs md:text-sm leading-relaxed">
+                Tous nos produits et services bénéficient d'une garantie de qualité
               </p>
             </div>
           </div>
           
-          <div className="flex items-start space-x-4">
-            <div className="bg-white/10 p-3 rounded-full">
-              <RefreshCw className="h-6 w-6 text-digitech-orange" />
+          <div className="flex items-start space-x-3 md:space-x-4 sm:col-span-2 lg:col-span-1">
+            <div className="bg-white/10 p-2 md:p-3 rounded-full flex-shrink-0">
+              <RefreshCw className="h-5 w-5 md:h-6 md:w-6 text-digitech-orange" />
             </div>
-            <div>
-              <h3 className="font-semibold mb-2">Service Après-vente</h3>
-              <p className="text-gray-300 text-sm">
-                Notre équipe technique est disponible pour vous accompagner et vous dépanner
+            <div className="min-w-0">
+              <h3 className="font-semibold mb-1 md:mb-2 text-sm md:text-base">Support Complet</h3>
+              <p className="text-gray-300 text-xs md:text-sm leading-relaxed">
+                Assistance technique et conseils pour tous nos produits et services
               </p>
             </div>
           </div>
