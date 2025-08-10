@@ -1,6 +1,6 @@
-
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { Product } from '@/data/products';
+import { useProducts } from './ProductsContext';
 
 interface CartItem {
   product: Product;
@@ -15,13 +15,12 @@ interface CartContextType {
   clearCart: () => void;
   cartTotal: number;
   cartCount: number;
-  setProducts: (products: Product[]) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const { products } = useProducts();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartTotal, setCartTotal] = useState(0);
   const [cartCount, setCartCount] = useState(0);
@@ -115,8 +114,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         updateQuantity,
         clearCart,
         cartTotal,
-        cartCount,
-        setProducts
+        cartCount
       }}
     >
       {children}
