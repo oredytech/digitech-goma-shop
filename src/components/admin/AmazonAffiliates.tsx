@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { useProducts } from '@/hooks/useProducts';
+import { useProducts } from '@/context/ProductsContext';
 import { AffiliateModal } from './modals/AffiliateModal';
 import { DeleteConfirmModal } from './modals/DeleteConfirmModal';
 import { Product } from '@/data/products';

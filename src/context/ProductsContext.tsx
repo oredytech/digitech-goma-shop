@@ -1,9 +1,18 @@
-
-import { useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import { Product, products as initialProducts } from '@/data/products';
 import { useToast } from '@/hooks/use-toast';
 
-export const useProducts = () => {
+interface ProductsContextType {
+  products: Product[];
+  addProduct: (productData: Omit<Product, 'id'>) => void;
+  updateProduct: (id: string, productData: Omit<Product, 'id'>) => void;
+  deleteProduct: (id: string) => void;
+  toggleProductVisibility: (id: string) => void;
+}
+
+const ProductsContext = createContext<ProductsContextType | undefined>(undefined);
+
+export const ProductsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const { toast } = useToast();
 
@@ -51,11 +60,25 @@ export const useProducts = () => {
     });
   }, [products, toast]);
 
-  return {
-    products,
-    addProduct,
-    updateProduct,
-    deleteProduct,
-    toggleProductVisibility,
-  };
+  return (
+    <ProductsContext.Provider
+      value={{
+        products,
+        addProduct,
+        updateProduct,
+        deleteProduct,
+        toggleProductVisibility,
+      }}
+    >
+      {children}
+    </ProductsContext.Provider>
+  );
+};
+
+export const useProducts = () => {
+  const context = useContext(ProductsContext);
+  if (context === undefined) {
+    throw new Error('useProducts must be used within a ProductsProvider');
+  }
+  return context;
 };

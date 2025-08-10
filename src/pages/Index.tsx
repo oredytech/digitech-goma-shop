@@ -5,9 +5,10 @@ import FeaturedProducts from '@/components/FeaturedProducts';
 import { ShoppingBag, ThumbsUp, Award, UserCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { products } from '@/data/products';
+import { useProducts } from '@/context/ProductsContext';
 
 const Index = () => {
+  const { products } = useProducts();
   const newProducts = products.filter(product => product.isNew).slice(0, 4);
   
   return (

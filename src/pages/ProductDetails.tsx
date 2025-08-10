@@ -6,12 +6,13 @@ import { ChevronRight, ShoppingCart, Check, ExternalLink, MinusCircle, PlusCircl
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { products } from '@/data/products';
+import { useProducts } from '@/context/ProductsContext';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 
 const ProductDetails = () => {
   const { id } = useParams<{ id: string }>();
+  const { products } = useProducts();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { addToCart } = useCart();

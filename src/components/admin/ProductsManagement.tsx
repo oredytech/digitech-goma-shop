@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { useProducts } from '@/hooks/useProducts';
+import { useProducts } from '@/context/ProductsContext';
 import { ProductModal } from './modals/ProductModal';
 import { DeleteConfirmModal } from './modals/DeleteConfirmModal';
 import { Product } from '@/data/products';

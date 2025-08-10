@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import { products, categories } from '@/data/products';
+import { categories } from '@/data/products';
+import { useProducts } from '@/context/ProductsContext';
 import ProductCard from '@/components/ProductCard';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
@@ -10,6 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Shop = () => {
+  const { products } = useProducts();
   const { addToCart } = useCart();
   const { toast } = useToast();
   const isMobile = useIsMobile();

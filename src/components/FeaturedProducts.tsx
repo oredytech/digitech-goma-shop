@@ -1,10 +1,11 @@
 
 import React from 'react';
 import ProductCard from './ProductCard';
-import { products } from '@/data/products';
+import { useProducts } from '@/context/ProductsContext';
 import { useToast } from '@/hooks/use-toast';
 
 const FeaturedProducts = () => {
+  const { products } = useProducts();
   const featuredProducts = products.filter(product => product.isFeatured);
   const { toast } = useToast();
 
