@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { Product, products as initialProducts } from '@/data/products';
 import { useToast } from '@/hooks/use-toast';
+import { useCart } from './CartContext';
 
 interface ProductsContextType {
   products: Product[];
@@ -16,6 +17,11 @@ export const ProductsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const { toast } = useToast();
 
+  // Update cart products when products change
+  useEffect(() => {
+    // This will be called from a child component to avoid hook order issues
+  }, [products]);
+
   const addProduct = useCallback((productData: Omit<Product, 'id'>) => {
     const newId = (Math.max(...products.map(p => parseInt(p.id))) + 1).toString();
     const newProduct: Product = {
@@ -23,7 +29,10 @@ export const ProductsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       id: newId,
     };
     
-    setProducts(prev => [...prev, newProduct]);
+    setProducts(prev => {
+      const updated = [...prev, newProduct];
+      return updated;
+    });
     toast({
       title: "Produit ajouté",
       description: `Le produit "${productData.name}" a été ajouté avec succès.`,
@@ -31,9 +40,12 @@ export const ProductsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, [products, toast]);
 
   const updateProduct = useCallback((id: string, productData: Omit<Product, 'id'>) => {
-    setProducts(prev => prev.map(product => 
-      product.id === id ? { ...productData, id } : product
-    ));
+    setProducts(prev => {
+      const updated = prev.map(product => 
+        product.id === id ? { ...productData, id } : product
+      );
+      return updated;
+    });
     toast({
       title: "Produit modifié",
       description: `Le produit "${productData.name}" a été mis à jour avec succès.`,
@@ -42,7 +54,10 @@ export const ProductsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const deleteProduct = useCallback((id: string) => {
     const product = products.find(p => p.id === id);
-    setProducts(prev => prev.filter(product => product.id !== id));
+    setProducts(prev => {
+      const updated = prev.filter(product => product.id !== id);
+      return updated;
+    });
     toast({
       title: "Produit supprimé",
       description: `Le produit "${product?.name}" a été supprimé avec succès.`,
@@ -50,13 +65,16 @@ export const ProductsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, [products, toast]);
 
   const toggleProductVisibility = useCallback((id: string) => {
-    setProducts(prev => prev.map(product => 
-      product.id === id ? { ...product, inStock: !product.inStock } : product
-    ));
-    const product = products.find(p => p.id === id);
-    toast({
-      title: "Visibilité modifiée",
-      description: `Le produit "${product?.name}" est maintenant ${product?.inStock ? 'masqué' : 'visible'}.`,
+    setProducts(prev => {
+      const updated = prev.map(product => 
+        product.id === id ? { ...product, inStock: !product.inStock } : product
+      );
+      const product = prev.find(p => p.id === id);
+      toast({
+        title: "Visibilité modifiée",
+        description: `Le produit "${product?.name}" est maintenant ${product?.inStock ? 'masqué' : 'visible'}.`,
+      });
+      return updated;
     });
   }, [products, toast]);
 
@@ -70,9 +88,23 @@ export const ProductsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         toggleProductVisibility,
       }}
     >
+      <ProductsUpdater products={products} />
       {children}
     </ProductsContext.Provider>
   );
+};
+
+// Helper component to update cart when products change
+const ProductsUpdater: React.FC<{ products: Product[] }> = ({ products }) => {
+  const cart = useCart();
+  
+  useEffect(() => {
+    if (cart && cart.setProducts) {
+      cart.setProducts(products);
+    }
+  }, [products, cart]);
+
+  return null;
 };
 
 export const useProducts = () => {
