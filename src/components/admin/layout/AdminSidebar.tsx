@@ -1,7 +1,9 @@
 
 import React from 'react';
-import { Sun, Moon, Bell } from 'lucide-react';
+import { Sun, Moon, Bell, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 import { 
   SidebarContent, 
   SidebarHeader, 
@@ -26,6 +28,24 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
   onSectionChange,
   onToggleDarkMode,
 }) => {
+  const { signOut } = useAuth();
+  const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Déconnexion réussie",
+        description: "À bientôt !",
+      });
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Impossible de se déconnecter",
+        variant: "destructive"
+      });
+    }
+  };
   return (
     <>
       <SidebarHeader className="flex items-center justify-center py-6">
@@ -70,6 +90,15 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           >
             <Bell className="mr-2 h-4 w-4" />
             Notifications
+          </Button>
+          <Button 
+            variant="destructive" 
+            size="sm" 
+            className="w-full justify-start transition-colors duration-200"
+            onClick={handleSignOut}
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            Déconnexion
           </Button>
         </div>
       </SidebarFooter>

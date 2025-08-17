@@ -14,10 +14,12 @@ import Cart from "./pages/Cart";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
+import Auth from "./pages/Auth";
 
 // Components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -29,7 +31,12 @@ const App = () => (
       <BrowserRouter>
         <div className="flex flex-col min-h-screen">
           <Routes>
-            <Route path="/admin/*" element={<Admin />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/admin/*" element={
+              <ProtectedRoute requireAdmin>
+                <Admin />
+              </ProtectedRoute>
+            } />
             <Route
               path="*"
               element={

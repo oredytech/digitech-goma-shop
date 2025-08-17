@@ -6,15 +6,31 @@ import { ShoppingBag, ThumbsUp, Award, UserCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useProducts } from '@/context/ProductsContext';
+import { useAuth } from '@/context/AuthContext';
 
 const Index = () => {
   const { products } = useProducts();
+  const { isAdmin } = useAuth();
   const newProducts = products.filter(product => product.isNew).slice(0, 4);
   
   return (
     <div className="min-h-screen overflow-hidden">
       {/* Hero Section */}
       <Hero />
+      
+      {/* Admin Access Banner */}
+      {isAdmin && (
+        <div className="bg-blue-50 border-b border-blue-200">
+          <div className="container mx-auto px-4 py-3 text-center">
+            <p className="text-blue-800 text-sm mb-2">Accès Administrateur Disponible</p>
+            <Link to="/admin">
+              <Button variant="outline" size="sm" className="border-blue-300 text-blue-700 hover:bg-blue-100">
+                Accéder au Tableau de Bord
+              </Button>
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Featured Products Section */}
       <FeaturedProducts />

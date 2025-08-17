@@ -41,7 +41,8 @@ const ProductsManagement = () => {
     addProduct, 
     updateProduct, 
     deleteProduct, 
-    toggleProductVisibility 
+    toggleProductVisibility,
+    loading
   } = useProducts();
 
   // Filtrer les produits
@@ -97,14 +98,22 @@ const ProductsManagement = () => {
   };
 
   // Sauvegarder un produit (ajout ou modification)
-  const handleSaveProduct = (productData: Omit<Product, 'id'>) => {
+  const handleSaveProduct = async (productData: Omit<Product, 'id'>) => {
     if (productModal.mode === 'add') {
-      addProduct(productData);
+      await addProduct(productData);
     } else if (productModal.product) {
-      updateProduct(productModal.product.id, productData);
+      await updateProduct(productModal.product.id, productData);
     }
     setProductModal({ isOpen: false, mode: 'add' });
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

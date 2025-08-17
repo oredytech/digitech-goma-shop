@@ -62,6 +62,84 @@ export type Database = {
         }
         Relationships: []
       }
+      products: {
+        Row: {
+          amazon_url: string | null
+          category: string
+          created_at: string
+          description: string | null
+          discount_price: number | null
+          id: string
+          image_url: string
+          in_stock: boolean
+          is_amazon_affiliate: boolean
+          is_featured: boolean
+          name: string
+          price: number
+          updated_at: string
+        }
+        Insert: {
+          amazon_url?: string | null
+          category: string
+          created_at?: string
+          description?: string | null
+          discount_price?: number | null
+          id?: string
+          image_url: string
+          in_stock?: boolean
+          is_amazon_affiliate?: boolean
+          is_featured?: boolean
+          name: string
+          price: number
+          updated_at?: string
+        }
+        Update: {
+          amazon_url?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          discount_price?: number | null
+          id?: string
+          image_url?: string
+          in_stock?: boolean
+          is_amazon_affiliate?: boolean
+          is_featured?: boolean
+          name?: string
+          price?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          email: string
+          id: string
+          role: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          email: string
+          id?: string
+          role?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          email?: string
+          id?: string
+          role?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
