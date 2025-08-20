@@ -28,6 +28,7 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { Product, categories } from '@/data/products';
+import { ImageUpload } from '@/components/admin/ImageUpload';
 
 const productSchema = z.object({
   name: z.string().min(1, "Le nom est requis"),
@@ -38,7 +39,7 @@ const productSchema = z.object({
   inStock: z.boolean(),
   isAmazonAffiliate: z.boolean(),
   amazonUrl: z.string().optional(),
-  image: z.string().url("URL d'image valide requise"),
+  image: z.string().min(1, "Une image est requise"),
   isFeatured: z.boolean().optional(),
   isNew: z.boolean().optional(),
 });
@@ -231,9 +232,12 @@ export const ProductModal: React.FC<ProductModalProps> = ({
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>URL de l'image</FormLabel>
+                  <FormLabel>Image du produit</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://example.com/image.jpg" {...field} />
+                    <ImageUpload
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
